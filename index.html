@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daniela Alejandra · XV Años</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#fbf5f5;
+    --paper2:#f7eded;
+    --ink:#3f3034;
+    --soft:#9a7d83;
+    --line:#d9c3c8;
+    --pink:#e9c6cf;
+    --pink2:#f1dce1;
+    --white:rgba(255,255,255,.52);
+    box-sizing:border-box;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100%;
+    color:var(--ink);
+    font-family:'EB Garamond',serif;
+    overflow-x:hidden;
+    background:#f8eef1;
+  }
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background-image:url('fondo.png');
+    background-position:center center;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    pointer-events:none;
+  }
+  body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:rgba(250,242,245,.30);
+    pointer-events:none;
+  }
+
+  #envelope-screen{
+    position:fixed;inset:0;z-index:100;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    background:rgba(250,242,245,.78);
+    backdrop-filter:blur(2px);
+    -webkit-backdrop-filter:blur(2px);
+    transition:opacity .8s ease,visibility .8s ease;
+  }
+  #envelope-screen.hidden{opacity:0;visibility:hidden;pointer-events:none}
+  .env-wrap{width:220px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .env-wrap:active{transform:scale(.97)}
+  .env-tap-label{
+    margin-top:24px;text-align:center;font-size:1.05rem;
+    color:#fff;font-style:italic
+  }
+  .env-names{
+    margin-top:6px;text-align:center;font-family:'Cormorant Garamond',serif;
+    font-weight:600;font-size:1.5rem;color:#fff
+  }
+  #envelope-screen svg{overflow:visible}
+  .flap{transform-origin:100px 62px;transition:transform .9s cubic-bezier(.6,0,.3,1)}
+  .env-wrap.opening .flap{transform:rotateX(180deg)}
+  .letter{transform:translateY(0);opacity:0;transition:transform 1s ease .35s,opacity .7s ease .35s}
+  .env-wrap.opening .letter{transform:translateY(-64px);opacity:1}
+
+  .frame{max-width:560px;margin:auto;padding-bottom:80px}
+  .topbar{
+    position:relative;
+    text-align:center;
+    padding:12px 18px;
+    font-size:.78rem;
+    letter-spacing:.08em;
+    color:#fff;
+    background:rgba(255,255,255,.18);
+    border-bottom:1px solid rgba(217,195,200,.7);
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  }
+
+  .hero{
+    min-height:82vh;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+    padding:72px 28px 78px;
+    background:linear-gradient(rgba(20,10,16,.16),rgba(20,10,16,.08));
+  }
+  .hero .corner{position:absolute;width:150px;height:150px;opacity:.42}
+  .hero .corner.tl{top:25px;left:-25px}
+  .hero .corner.br{bottom:15px;right:-30px;transform:rotate(178deg)}
+  .crown-mark{width:132px;margin:0 auto 22px;opacity:.98}
+  .crown-mark svg{display:block;width:100%;height:auto;filter:drop-shadow(0 5px 8px rgba(120,80,95,.10))}
+  .kicker{
+    max-width:330px;line-height:1.75;font-size:1.08rem;
+    color:#fff;font-style:italic
+  }
+  .name{
+    font-family:'Cormorant Garamond',serif;font-weight:500;
+    font-size:clamp(3.5rem,14vw,5.2rem);line-height:.92;
+    letter-spacing:-.025em;color:#4a353b;margin:24px 0 10px
+  }
+  .subtitle{
+    font-family:'Cormorant Garamond',serif;font-size:1.18rem;
+    letter-spacing:.38em;color:#a57f88;margin-left:.38em
+  }
+  .hero-rule{width:62px;height:1px;background:#c9adb5;margin:28px auto 0}
+
+  .countdown-section{
+    padding:38px 22px 48px;text-align:center;
+    background:rgba(255,255,255,.25)
+  }
+  .countdown-title{
+    font-family:'Cormorant Garamond',serif;font-size:1.45rem;
+    font-style:italic;color:#fff;margin-bottom:18px
+  }
+  .countdown{display:flex;justify-content:center;gap:8px}
+  .unit{
+    width:72px;padding:13px 0 10px;border:1px solid rgba(217,195,200,.75);
+    background:rgba(255,255,255,.30);border-radius:10px;
+    box-shadow:0 5px 18px rgba(90,60,70,.05)
+  }
+  .unit .num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;display:block;line-height:1}
+  .unit .lbl{font-size:.57rem;letter-spacing:.14em;color:rgba(255,255,255,.88);display:block;margin-top:6px}
+
+  .section{padding:34px 26px 38px}
+  .section-intro{text-align:center;margin-bottom:28px}
+  .eyebrow{
+    font-size:.65rem;letter-spacing:.24em;color:rgba(255,255,255,.92);text-transform:uppercase;
+    margin-bottom:8px
+  }
+  .section-title{
+    font-family:'Cormorant Garamond',serif;font-size:2.05rem;font-weight:500;
+    color:#fff
+  }
+
+  .timeline{position:relative;margin:12px 0 10px;padding:10px 0}
+  .timeline::before{
+    content:"";position:absolute;left:28px;top:0;bottom:0;width:1px;background:#d7c0c6
+  }
+  .event{
+    position:relative;display:grid;grid-template-columns:58px 1fr;
+    gap:18px;min-height:128px
+  }
+  .event-dot{
+    width:18px;height:18px;border-radius:50%;
+    margin:4px 0 0 20px;background:#f4e4e8;
+    border:1px solid #d9b9c2;box-shadow:0 0 0 5px rgba(255,255,255,.35)
+  }
+  .event h3{
+    font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:500;
+    margin-bottom:3px
+  }
+  .event p{
+    font-size:.82rem;letter-spacing:.18em;color:#9a7f86;
+    text-transform:uppercase;line-height:1.45
+  }
+
+  .card{
+    background:rgba(255,250,252,.48);
+    border:1px solid rgba(255,255,255,.88);
+    border-radius:22px;
+    padding:42px 26px 26px;
+    position:relative;
+    box-shadow:0 12px 30px rgba(85,60,70,.10),inset 0 1px 0 rgba(255,255,255,.92);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)
+  }
+  .badge{
+    position:absolute;
+    top:-21px;
+    left:26px;
+    width:54px;height:54px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(145deg,#df8fa1,#c9a227);
+    border:1px solid rgba(255,255,255,.7);
+    box-shadow:0 8px 18px rgba(85,60,70,.16);
+  }
+  .badge svg{
+    width:25px;height:25px;
+    stroke:#fffaf6;fill:none;stroke-width:1.7
+  }
+  .card h2{
+    font-family:'Cormorant Garamond',serif;font-weight:500;
+    font-size:1.8rem;color:#49363b;margin:0 0 18px
+  }
+  .row{display:flex;gap:14px;align-items:center;margin-bottom:16px}
+  .row:last-of-type{margin-bottom:0}
+  .row .ico{
+    width:32px;height:32px;border-radius:50%;flex-shrink:0;
+    background:rgba(241,220,225,.7);display:flex;align-items:center;justify-content:center
+  }
+  .row .ico svg{width:15px;height:15px;stroke:#806c72;fill:none;stroke-width:1.6}
+  .row p{font-size:1rem;line-height:1.45}
+  .row .eyebrow{font-size:.66rem;letter-spacing:.18em;color:#a47e88;margin-bottom:2px}
+
+  .btn{
+    position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+    min-height:48px;margin-top:22px;padding:13px 20px;border-radius:999px;
+    text-decoration:none;font-size:.92rem;color:#5f4b51;
+    background:linear-gradient(180deg,rgba(255,255,255,.60),rgba(255,255,255,.26));
+    border:1px solid rgba(255,255,255,.95);
+    box-shadow:0 8px 20px rgba(75,55,65,.12),inset 0 1px 2px rgba(255,255,255,.95);
+    backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px)
+  }
+  .btn::before{
+    content:"";position:absolute;left:12%;right:12%;top:4px;height:8px;
+    border-radius:999px;background:rgba(255,255,255,.7);filter:blur(2px)
+  }
+  .btn svg{width:16px;height:16px;stroke:#6d585f;fill:none;stroke-width:1.7}
+
+  .rsvp-q{font-size:.96rem;color:#8b737a;line-height:1.5;margin-bottom:16px}
+  .rsvp-actions{display:flex;gap:10px}
+  .rsvp-btn{
+    flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+    min-height:46px;border-radius:999px;border:1px solid rgba(255,255,255,.9);
+    background:rgba(255,255,255,.42);color:#5f4b51;text-decoration:none;
+    box-shadow:0 6px 16px rgba(75,55,65,.08),inset 0 1px 2px rgba(255,255,255,.9);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+  }
+  .rsvp-btn svg{width:15px;height:15px;stroke:#6d585f;fill:none;stroke-width:1.8}
+  .deadline{font-size:.78rem;color:#9a7f86;margin-top:14px;text-align:center}
+
+  footer{text-align:center;padding:34px 24px 10px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.15rem;color:#fff}
+
+  .sound-toggle{
+    position:fixed;right:18px;bottom:22px;z-index:50;
+    width:54px;height:54px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.60);
+    border:1px solid rgba(255,255,255,.95);
+    box-shadow:0 8px 22px rgba(70,50,60,.14),inset 0 1px 2px rgba(255,255,255,.95);
+    backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);
+    cursor:pointer
+  }
+  .sound-toggle svg{width:20px;height:20px;stroke:#6d585f;fill:none;stroke-width:1.7}
+
+  @media(max-width:390px){
+    .hero{min-height:76vh;padding-left:20px;padding-right:20px}
+    .countdown{gap:5px}.unit{width:68px}
+    .section{padding-left:18px;padding-right:18px}
+  }
+
+
+  .rsvp-lead{
+    max-width:360px;margin:8px auto 0;
+    color:#8b737a;font-size:.95rem;line-height:1.5
+  }
+  .rsvp-card{margin-top:8px}
+  .field-label{
+    display:block;margin:0 0 8px;
+    font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;
+    color:#9a7d85
+  }
+  .guest-select{
+    width:100%;height:50px;padding:0 16px;
+    border-radius:999px;border:1px solid rgba(255,255,255,.95);
+    background:linear-gradient(180deg,rgba(255,255,255,.66),rgba(255,255,255,.30));
+    color:#5f4b51;font-family:inherit;font-size:1rem;
+    outline:none;appearance:auto;
+    box-shadow:0 7px 18px rgba(75,55,65,.08),inset 0 1px 2px rgba(255,255,255,.95);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+  }
+  .guest-info{margin-top:24px}
+  .guest-name{
+    font-family:'Cormorant Garamond',serif;font-size:1.75rem;
+    color:#fff;margin-bottom:3px
+  }
+  .guest-pass{font-size:1rem;color:#806c72;margin-bottom:22px}
+  .guest-pass strong{color:#6b4d57}
+  .confirm-block{margin-bottom:20px}
+  .confirm-actions{display:flex;gap:9px}
+  .rsvp-choice{
+    flex:1;min-height:46px;padding:10px 8px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.92);
+    background:rgba(255,255,255,.43);color:#624e55;
+    font-family:inherit;font-size:.9rem;cursor:pointer;
+    box-shadow:0 6px 16px rgba(75,55,65,.08),inset 0 1px 2px rgba(255,255,255,.9);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)
+  }
+  .rsvp-choice.active{
+    background:linear-gradient(180deg,rgba(233,198,207,.78),rgba(255,255,255,.40));
+    border-color:rgba(205,157,171,.9);
+    box-shadow:0 7px 18px rgba(120,75,90,.13),inset 0 1px 2px rgba(255,255,255,.95)
+  }
+  .attendees-block{margin-top:18px}
+  .attendee-options{display:flex;flex-wrap:wrap;gap:9px}
+  .attendee-option{
+    width:48px;height:48px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.92);
+    background:rgba(255,255,255,.45);color:#624e55;
+    font-family:'Cormorant Garamond',serif;font-size:1.15rem;
+    cursor:pointer;
+    box-shadow:0 6px 15px rgba(75,55,65,.08),inset 0 1px 2px rgba(255,255,255,.9)
+  }
+  .attendee-option.active{
+    background:linear-gradient(145deg,#df8fa1,#c9a227);
+    color:#fff;border-color:rgba(255,255,255,.95)
+  }
+  .rsvp-submit{border:1px solid rgba(255,255,255,.95);cursor:pointer}
+  .rsvp-submit:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  .rsvp-result{
+    margin-top:15px;text-align:center;min-height:22px;
+    color:#765c65;font-size:.92rem;line-height:1.45
+  }
+  .rsvp-result.success{color:#5e7a67}
+  .rsvp-result.error{color:#9a5964}
+  .deadline-box{
+    margin-top:24px;padding:13px 15px;text-align:center;
+    border-top:1px solid rgba(217,195,200,.65);
+    color:#806c72;font-size:.78rem;line-height:1.5
+  }
+  .deadline-box strong{
+    display:block;font-size:.67rem;letter-spacing:.13em;
+    text-transform:uppercase;color:#a27f88;margin-bottom:3px
+  }
+  .deadline-box span{font-family:'Cormorant Garamond',serif;font-size:1rem}
+  .deadline-closed{
+    padding:15px;border-radius:12px;
+    background:rgba(239,220,225,.55);color:#8c5d67;
+    text-align:center;font-size:.9rem;line-height:1.45
+  }
+
+</style>
+</head>
+<body class="heart-field">
+<audio id="bg-music" loop preload="auto">
+  <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+
+<!-- ======== ENVELOPE INTRO ======== -->
+<div id="envelope-screen">
+  <div class="env-wrap" id="env-wrap">
+    <svg viewBox="0 0 200 140" width="220" height="154" xmlns="http://www.w3.org/2000/svg">
+      <!-- back of envelope -->
+      <rect x="10" y="20" width="180" height="112" rx="10" fill="#FBEAF0" stroke="#D98FA9" stroke-width="1.4"/>
+      <!-- letter peeking out -->
+      <g class="letter">
+        <rect x="30" y="10" width="140" height="90" rx="6" fill="#FFFDFB" stroke="#C9A227" stroke-width="1.2"/>
+        <line x1="46" y1="34" x2="154" y2="34" stroke="#E7C9D2" stroke-width="1.4"/>
+        <line x1="46" y1="48" x2="140" y2="48" stroke="#E7C9D2" stroke-width="1.4"/>
+        <line x1="46" y1="62" x2="150" y2="62" stroke="#E7C9D2" stroke-width="1.4"/>
+        <circle cx="100" cy="80" r="7" fill="none" stroke="#C9A227" stroke-width="1.3"/>
+      </g>
+      <!-- envelope front pockets -->
+      <path d="M10 30 L100 90 L190 30 L190 122 A10 10 0 0 1 180 132 L20 132 A10 10 0 0 1 10 122 Z" fill="#F6D7E1" stroke="#D98FA9" stroke-width="1.4"/>
+      <!-- flap -->
+      <g class="flap">
+        <path d="M10 30 A10 10 0 0 1 20 20 L180 20 A10 10 0 0 1 190 30 L100 90 Z" fill="#F0BFD1" stroke="#D98FA9" stroke-width="1.4"/>
+        <circle cx="100" cy="58" r="9" fill="#C9A227" opacity="0.9"/>
+        <text x="100" y="62" font-family="Cormorant Garamond, serif" font-size="11" fill="#FFF8EF" text-anchor="middle" font-style="italic">D·A</text>
+      </g>
+    </svg>
+  </div>
+  <p class="env-names">Daniela Alejandra</p>
+  <p class="env-tap-label">Toca el sobre para abrir tu invitación</p>
+</div>
+
+<!-- ======== INVITATION PAGE ======== -->
+<div class="frame">
+
+  <div class="topbar">Con todo mi cariño, te espero en este día tan especial</div>
+
+  <section class="hero">
+    <p class="kicker">Con la bendición de Dios y el corazón lleno de alegría, tengo el honor de invitarte a celebrar conmigo este momento tan especial.</p>
+    <h1 class="name">Daniela<br>Alejandra</h1>
+    <p class="subtitle">XV AÑOS</p>
+    <div class="hero-rule"></div>
+  </section>
+
+  <section class="countdown-section">
+    <p class="countdown-title">Faltan</p>
+    <div class="countdown">
+      <div class="unit"><span class="num" id="cd-days">00</span><span class="lbl">DÍAS</span></div>
+      <div class="unit"><span class="num" id="cd-hours">00</span><span class="lbl">HORAS</span></div>
+      <div class="unit"><span class="num" id="cd-mins">00</span><span class="lbl">MIN</span></div>
+      <div class="unit"><span class="num" id="cd-secs">00</span><span class="lbl">SEG</span></div>
+    </div>
+  </section>
+<section class="section">
+    <div class="card">
+      <div class="badge"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></div>
+      <h2>Fecha y hora</h2>
+      <div class="row"><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><p>Sábado, 31 de octubre de 2026</p></div>
+      <div class="row"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></span><p>6:00 p. m.</p></div>
+      <a class="btn" href="#" id="calendar-link">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Agregar al calendario
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="card">
+      <div class="badge"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg></div>
+      <h2>Ubicación</h2>
+      <div class="row">
+        <span class="ico"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg></span>
+        <div><p class="eyebrow">ARTE VISTA</p><p>Mirador de la Aduana, Ibarra, Ecuador</p></div>
+      </div>
+      <a class="btn" id="map-link" href="https://maps.app.goo.gl/FHHPAyUAQoiGi1iVA" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3-6-3Z"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+        Ver mapa
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="card">
+      <div class="badge"><svg viewBox="0 0 24 24"><path d="M8 4 4 8l3 3-2 9h14l-2-9 3-3-4-4-4 3-4-3Z"/></svg></div>
+      <h2>Código de vestimenta</h2>
+      <div class="row"><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 4 4 8l3 3-2 9h14l-2-9 3-3-4-4-4 3-4-3Z"/></svg></span><p>Formal / Elegante</p></div>
+    </div>
+  </section>
+
+
+
+  <section class="section">
+    <div class="card">
+      <div class="badge"><svg viewBox="0 0 24 24"><path d="M20 12v9H4v-9"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7C12 4 9 2 7 3c-2 1-1 4 5 4Z"/><path d="M12 7c0-3 3-5 5-4 2 1 1 4-5 4Z"/></svg></div>
+      <h2>Mesa de regalos</h2>
+      <p style="font-size:.98rem;line-height:1.55;color:#624e55">Si deseas obsequiarme algo, mi mejor regalo será tu compañía. Si quieres un detalle extra, se recibe con cariño una lluvia de sobres.</p>
+    </div>
+  </section>
+
+  
+  <section class="section rsvp-section" id="confirmacion">
+    <div class="section-intro">
+      <p class="eyebrow">Tu presencia es muy importante</p>
+      <h2 class="section-title">Confirmación de asistencia</h2>
+      <p class="rsvp-lead">Por favor, seleccione su nombre para confirmar su asistencia.</p>
+    </div>
+
+    <div class="card rsvp-card">
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M7 5.5h10v13H7z"/>
+          <path d="M9 3.5v4M15 3.5v4M8 9h8M9.5 13h5M9.5 16h3"/>
+        </svg>
+      </div>
+
+      <label class="field-label" for="guestSelect">Invitado</label>
+      <select id="guestSelect" class="guest-select">
+        <option value="">Seleccione su nombre</option>
+      </select>
+
+      <div id="guestInfo" class="guest-info" hidden>
+        <p class="guest-name" id="guestName"></p>
+        <p class="guest-pass">Su invitación es válida para <strong id="guestMax"></strong> <span id="guestPeopleWord">personas</span>.</p>
+
+        <div class="confirm-block">
+          <p class="field-label">¿Confirma su asistencia?</p>
+          <div class="confirm-actions">
+            <button type="button" class="rsvp-choice" id="yesBtn">Sí, confirmar</button>
+            <button type="button" class="rsvp-choice" id="noBtn">No podré asistir</button>
+          </div>
+        </div>
+
+        <div class="attendees-block" id="attendeesBlock" hidden>
+          <p class="field-label">¿Cuántas personas asistirán?</p>
+          <div class="attendee-options" id="attendeeOptions"></div>
+        </div>
+
+        <button type="button" class="btn rsvp-submit" id="submitRsvp" disabled>
+          <svg viewBox="0 0 24 24">
+            <path d="M20 6 9 17l-5-5"/>
+          </svg>
+          Confirmar asistencia
+        </button>
+
+        <p class="rsvp-result" id="rsvpResult" aria-live="polite"></p>
+      </div>
+
+      <div class="deadline-box">
+        <strong>Fecha límite de confirmación</strong>
+        <span>18 de octubre de 2026</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>Con todo mi cariño, ¡te espero!</footer>
+
+</div>
+
+<button class="sound-toggle" id="sound-toggle" aria-label="Silenciar música" style="display:none;">
+  <svg id="sound-icon" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg>
+</button>
+
+<script>
+  /* ---------- Cuenta regresiva ---------- */
+  const eventDate = new Date("2026-10-31T18:00:00-05:00").getTime(); // EDITA fecha/hora aquí
+
+  function updateCountdown(){
+    const now = Date.now();
+    const diff = eventDate - now;
+    const els = {
+      d: document.getElementById('cd-days'),
+      h: document.getElementById('cd-hours'),
+      m: document.getElementById('cd-mins'),
+      s: document.getElementById('cd-secs')
+    };
+    if(diff <= 0){
+      els.d.textContent='00'; els.h.textContent='00'; els.m.textContent='00'; els.s.textContent='00';
+      document.querySelector('.countdown-title').textContent='¡Es hoy!';
+      return;
+    }
+    els.d.textContent = String(Math.floor(diff/(1000*60*60*24))).padStart(2,'0');
+    els.h.textContent = String(Math.floor((diff%(1000*60*60*24))/(1000*60*60))).padStart(2,'0');
+    els.m.textContent = String(Math.floor((diff%(1000*60*60))/(1000*60))).padStart(2,'0');
+    els.s.textContent = String(Math.floor((diff%(1000*60))/1000)).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown,1000);
+
+  const cal = document.getElementById('calendar-link');
+  cal.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('XV Años de Daniela Alejandra')}&dates=20261031T180000/20261031T230000&details=${encodeURIComponent('Celebración de mis XV años')}&location=${encodeURIComponent('Mirador de la Aduana, Ibarra, Ecuador')}`;
+  cal.target = "_blank";
+
+  /* ---------- Música de la invitación ---------- */
+  const bgMusic = document.getElementById('bg-music');
+  let musicOn = true;
+
+  function startMusic(){
+    if(!musicOn) return;
+    bgMusic.volume = 0.55;
+    const promise = bgMusic.play();
+    if(promise && promise.catch){
+      promise.catch(() => {
+        // El navegador puede bloquear el audio hasta que exista una interacción.
+      });
+    }
+  }
+
+  function stopMusic(){
+    bgMusic.pause();
+  }
+
+  /* ---------- Apertura del sobre ---------- */
+  const envScreen = document.getElementById('envelope-screen');
+  const envWrap = document.getElementById('env-wrap');
+  const soundToggle = document.getElementById('sound-toggle');
+  const soundIcon = document.getElementById('sound-icon');
+
+  envWrap.addEventListener('click', () => {
+    startMusic();
+
+    envWrap.classList.add('opening');
+    setTimeout(() => {
+      envScreen.classList.add('hidden');
+      soundToggle.style.display = 'flex';
+    }, 750);
+  });
+
+  soundToggle.addEventListener('click', () => {
+    musicOn = !musicOn;
+    if(musicOn){
+      startMusic();
+      soundIcon.innerHTML = '<path d="M4 9v6h4l5 5V4L8 9H4Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/>';
+    } else {
+      stopMusic();
+      soundIcon.innerHTML = '<path d="M4 9v6h4l5 5V4L8 9H4Z"/><line x1="16" y1="9" x2="21" y2="14"/><line x1="21" y1="9" x2="16" y2="14"/>';
+    }
+  });
+
+  /* ---------- Confirmación personalizada de invitados ---------- */
+  const guests = [
+    ["Diana Janeth Noboa y Flia",4],
+    ["Patricio Novoa y Flia",6],
+    ["Nixon Pavon y Sra",2],
+    ["Christian Novoa y Sra",2],
+    ["Lenin Noboa y Sra",2],
+    ["Juan Arce y Flia",4],
+    ["Cristian Congo y Sra",2],
+    ["Nixon Espinoza y Flia",4],
+    ["Paul Espinoza y Sra",2],
+    ["Edison Congo y Sra",2],
+    ["Alexander Congo y Sra",2],
+    ["Javier Congo y Sra",2],
+    ["Diana Dolores Noboa y Flia",3],
+    ["Isacc Rosero y Sra",2],
+    ["Dolores Suarez",1],
+    ["Carlos Bosmediano y Flia",5],
+    ["Manuel Noboa e Hijos",2]
+  ];
+
+  const deadline = new Date("2026-10-18T23:59:59-05:00");
+  const guestSelect = document.getElementById("guestSelect");
+  const guestInfo = document.getElementById("guestInfo");
+  const guestName = document.getElementById("guestName");
+  const guestMax = document.getElementById("guestMax");
+  const guestPeopleWord = document.getElementById("guestPeopleWord");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const attendeesBlock = document.getElementById("attendeesBlock");
+  const attendeeOptions = document.getElementById("attendeeOptions");
+  const submitRsvp = document.getElementById("submitRsvp");
+  const rsvpResult = document.getElementById("rsvpResult");
+
+  let selectedGuest = null;
+  let attending = null;
+  let attendeeCount = null;
+
+  guests.forEach(([name,max]) => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    guestSelect.appendChild(option);
+  });
+
+  function isDeadlineOpen(){
+    return new Date() <= deadline;
+  }
+
+  function clearResult(){
+    rsvpResult.textContent = "";
+    rsvpResult.className = "rsvp-result";
+  }
+
+  function renderAttendeeOptions(max){
+    attendeeOptions.innerHTML = "";
+    for(let i=1;i<=max;i++){
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "attendee-option";
+      button.textContent = i;
+      button.addEventListener("click", () => {
+        attendeeCount = i;
+        document.querySelectorAll(".attendee-option").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        submitRsvp.disabled = false;
+      });
+      attendeeOptions.appendChild(button);
+    }
+  }
+
+  function resetGuestChoices(){
+    attending = null;
+    attendeeCount = null;
+    yesBtn.classList.remove("active");
+    noBtn.classList.remove("active");
+    attendeesBlock.hidden = true;
+    submitRsvp.disabled = true;
+    clearResult();
+  }
+
+  guestSelect.addEventListener("change", () => {
+    clearResult();
+    selectedGuest = guests.find(g => g[0] === guestSelect.value) || null;
+    resetGuestChoices();
+
+    if(!selectedGuest){
+      guestInfo.hidden = true;
+      return;
+    }
+
+    guestInfo.hidden = false;
+    guestName.textContent = selectedGuest[0];
+    guestMax.textContent = selectedGuest[1];
+    guestPeopleWord.textContent = selectedGuest[1] === 1 ? "persona" : "personas";
+    renderAttendeeOptions(selectedGuest[1]);
+
+    if(!isDeadlineOpen()){
+      document.querySelector(".rsvp-card").querySelectorAll("select,button").forEach(el => el.disabled = true);
+      rsvpResult.textContent = "El período para confirmar asistencia finalizó el 18 de octubre de 2026.";
+      rsvpResult.className = "rsvp-result error";
+    }
+  });
+
+  yesBtn.addEventListener("click", () => {
+    if(!selectedGuest || !isDeadlineOpen()) return;
+    attending = true;
+    attendeeCount = null;
+    yesBtn.classList.add("active");
+    noBtn.classList.remove("active");
+    attendeesBlock.hidden = false;
+    submitRsvp.disabled = true;
+    clearResult();
+  });
+
+  noBtn.addEventListener("click", () => {
+    if(!selectedGuest || !isDeadlineOpen()) return;
+    attending = false;
+    attendeeCount = 0;
+    noBtn.classList.add("active");
+    yesBtn.classList.remove("active");
+    attendeesBlock.hidden = true;
+    submitRsvp.disabled = false;
+    clearResult();
+  });
+
+  submitRsvp.addEventListener("click", async () => {
+    if(!selectedGuest || !isDeadlineOpen()) return;
+
+    const [name,max] = selectedGuest;
+
+    if(attending === true && (!attendeeCount || attendeeCount > max)){
+      rsvpResult.textContent = "Seleccione cuántas personas asistirán.";
+      rsvpResult.className = "rsvp-result error";
+      return;
+    }
+
+    const record = {
+      invitado:name,
+      pase:max,
+      confirma:attending ? "Sí" : "No",
+      asistentes:attendeeCount,
+      fecha:new Date().toISOString()
+    };
+
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwXFl7pkU7Dio8FX-mJ0bjUpQlpxqyY-fCc-943t572ShcEJQ7Dj1I-807HVCcUt5zi/exec";
+
+    submitRsvp.disabled = true;
+    rsvpResult.textContent = "Registrando su confirmación...";
+    rsvpResult.className = "rsvp-result";
+
+    try {
+      const response = await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        headers: {"Content-Type": "text/plain;charset=utf-8"},
+        body: JSON.stringify(record)
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        throw new Error(result.error || "No se pudo registrar la confirmación.");
+      }
+
+      if(attending){
+        rsvpResult.textContent = `✓ ${name}, su asistencia quedó registrada para ${attendeeCount} ${attendeeCount === 1 ? "persona" : "personas"}.`;
+      } else {
+        rsvpResult.textContent = `✓ ${name}, hemos registrado que no podrá asistir.`;
+      }
+      rsvpResult.className = "rsvp-result success";
+
+    } catch (error) {
+      console.error(error);
+      rsvpResult.textContent = "No fue posible registrar la confirmación. Verifique su conexión e inténtelo nuevamente.";
+      rsvpResult.className = "rsvp-result error";
+      submitRsvp.disabled = false;
+    }
+  });
+
+  // Estado inicial si ya pasó la fecha límite.
+  if(!isDeadlineOpen()){
+    document.querySelectorAll("#confirmacion select,#confirmacion button").forEach(el => el.disabled = true);
+  }
+
+</script>
+</body>
+</html>
