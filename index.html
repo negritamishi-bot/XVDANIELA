@@ -801,7 +801,14 @@ footer .glass-text{
       const result = await response.json();
 
       if (!result.success) {
-        throw new Error(result.error || "No se pudo registrar la confirmación.");
+  if (result.duplicate) {
+    rsvpResult.textContent = "⚠️ Este invitado ya realizó su confirmación. No es posible registrar una nueva respuesta.";
+    rsvpResult.className = "rsvp-result error";
+    submitRsvp.disabled = true;
+    return;
+  }
+
+  throw new Error(result.error || "No se pudo registrar la confirmación.");
       }
 
       if(attending){
