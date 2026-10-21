@@ -551,7 +551,7 @@ footer .glass-text{
 
       <div class="deadline-box">
         <strong>Fecha límite de confirmación</strong>
-        <span>18 de octubre de 2026</span>
+        <span>25 de octubre de 2026</span>
       </div>
     </div>
   </section>
@@ -566,7 +566,7 @@ footer .glass-text{
 
 <script>
   /* ---------- Cuenta regresiva ---------- */
-  const eventDate = new Date("2026-10-31T18:00:00-05:00").getTime(); // EDITA fecha/hora aquí
+  const eventDate = new Date("2026-10-25T23:59:00-05:00").getTime(); // EDITA fecha/hora aquí
 
   function updateCountdown(){
     const now = Date.now();
@@ -642,6 +642,7 @@ footer .glass-text{
 
   /* ---------- Confirmación personalizada de invitados ---------- */
   const guests = [
+    ["Martín Noboa y Sra",2],
     ["Elías Vernaza y Flia",4],
     ["Santiago Noboa y Flia",2],
     ["Daniel Espinoza y Flia",3],
@@ -742,7 +743,7 @@ footer .glass-text{
 
     if(!isDeadlineOpen()){
       document.querySelector(".rsvp-card").querySelectorAll("select,button").forEach(el => el.disabled = true);
-      rsvpResult.textContent = "El período para confirmar asistencia finalizó el 18 de octubre de 2026.";
+      rsvpResult.textContent = "El período para confirmar asistencia finalizó el 25 de octubre de 2026.";
       rsvpResult.className = "rsvp-result error";
     }
   });
